@@ -19,6 +19,10 @@
 #define COLOR_ORDER   GRB
 #define LED_TYPE      WS2812B
 
+#define ARRAY_SIZE(a)                               \
+  ((sizeof(a) / sizeof(*(a))) /                     \
+  static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
+
 const uint8_t FRAMES_PER_SECOND = 60;
 const int NUM_LEDS = 300;
 
@@ -31,7 +35,14 @@ Animation *animation4 = new Animation(160, 0, 255, 91, 120);
 Animation *animation5 = new Animation(2, 0, 255, 121, 150);
 */
 const int numAnimations = 10;
-Mover *animation[numAnimations];
+Animation* animation[numAnimations];
+
+// List of patterns to cycle through.  Each is defined as a separate function below.
+
+typedef void(*SimplePatternList[])(uint8_t segments, uint8_t numColors, uint8_t hueSpeed);
+SimplePatternList gPatterns = { GummyWorm1 , GummyWorm2 , GummyWorm3, GummyWorm4 };
+
+uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 
 void setup(){
 
@@ -42,35 +53,37 @@ void setup(){
 	LEDS.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 	FastLED.setBrightness(255);
 
+	Serial.println("Starting...");
+	Serial.println(freeMemory());
+	Serial.println(gCurrentPatternNumber);
+
 	GummyWorm1(10, 2,2);
 }
 
-// List of patterns to cycle through.  Each is defined as a separate function below.
-
-typedef void(*SimplePatternList[])(uint8_t segments, uint8_t numColors, uint8_t hueSpeed);
-SimplePatternList gPatterns = { GummyWorm1 , GummyWorm2 , GummyWorm3, GummyWorm4};
-
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
-
 void loop(){
 
-	/*EVERY_N_SECONDS(10) {
+	EVERY_N_SECONDS(10) {
 
 		nextPattern();
 
 		Serial.println(freeMemory());
+		Serial.println(gCurrentPatternNumber);
 
 		for (int i = 0; i < numAnimations; i++) {
-			delete animation[i];
+			if (animation[i] == NULL) {
+			}
+			else {
+				delete animation[i];
+				animation[i] = NULL;
+			}
 		}
 
 		fadeToBlackBy(leds, NUM_LEDS, 255);
 
 
-		gPatterns[gCurrentPatternNumber](random8(2, 20), random8(2, 5), random8(1, 3));
-	}*/
+		gPatterns[gCurrentPatternNumber](10, 2, 1);
+	}
 
-	
 	if (random8(0, 255) < 6) {
 		animation[0]->Bounce();
 	}
@@ -84,12 +97,12 @@ void loop(){
 		}
 	}
 
-	animation[0]->Display();
+	//animation[0]->Display();
 
 	// send the 'leds' array out to the actual LED strip
-	//FastLED.show();
+	FastLED.show();
 	// insert a delay to keep the framerate modest
-	//FastLED.delay(1000 / FRAMES_PER_SECOND);
+	FastLED.delay(1000 / FRAMES_PER_SECOND);
 
 	
 
@@ -98,11 +111,13 @@ void loop(){
 void nextPattern()
 {
 	// add one to the current pattern number, and wrap around at the end
-	gCurrentPatternNumber = (gCurrentPatternNumber + 1) % 4;//(ARRAY_SIZE(gPatterns) - 1);
+	gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
 
 }
 
 void GummyWorm1(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
+
+	//Serial.println("Gummy Worm 1 Start");
 
 	segments = 1;
 
@@ -122,9 +137,12 @@ void GummyWorm1(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 		animation[i]->SetHue(i*(255 / numColors));
 	}
 
+	//Serial.println("Gummy Worm 1 End");
 }
 
 void GummyWorm2(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
+
+	//Serial.println("Gummy Worm 2 Start");
 
 	segments = numAnimations;
 
@@ -156,6 +174,8 @@ void GummyWorm2(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
 void GummyWorm3(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
+	//Serial.println("Gummy Worm 3 Start");
+
 	segments = numAnimations;
 
 	uint16_t border[numAnimations + 1];
@@ -186,6 +206,8 @@ void GummyWorm3(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
 void GummyWorm4(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
+	//Serial.println("Gummy Worm 4 Start");
+
 	segments = numAnimations;
 
 	uint16_t border[numAnimations + 1];
@@ -212,5 +234,7 @@ void GummyWorm4(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 		animation[i]->SetRange(border[i] + 1, border[i + 1]);
 		animation[i]->SetHue(i*(255 / numColors));
 	}
+
+	//Serial.println("Gummy Worm 4 End");
 
 }

@@ -37,10 +37,12 @@ public:
 
 	void SetRange(uint16_t newRangeStart, uint16_t newRangeEnd);
 
-	void Update();
+	virtual void Update();
 	void Display();
 
-	
+	virtual void SetSpeed(float newSpeed);
+
+	virtual void Bounce();
 
 };
 

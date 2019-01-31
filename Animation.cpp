@@ -89,4 +89,12 @@ void Animation::Display(){
 	//fadeToBlackBy(leds, NUM_LEDS, 255);
 }
 
+void Animation::SetSpeed(float newSpeed)
+{
+}
+
+void Animation::Bounce()
+{
+}
+
 
