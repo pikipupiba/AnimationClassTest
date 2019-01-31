@@ -71,11 +71,15 @@ void loop(){
 	}*/
 
 	
+	if (random8(0, 255) < 5) {
+		animation[0]->Bounce();
+	}
+
 	for (int i = 0; i < numAnimations; i++) {
 		if (animation[i] == NULL) {
 		}
 		else{
-			animation[i]->SetSpeed(float(beatsin8(11,15,100)+ beatsin8(4, 15, 100))/70);
+			animation[i]->SetSpeed(float(beatsin8(11,5,50)+ beatsin8(4, 5, 50)+ beatsin8(3, 5, 50) + beatsin8(7, 5, 50))/70);
 			animation[i]->Update();
 		}
 	}

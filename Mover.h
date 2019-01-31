@@ -23,6 +23,8 @@ public:
 
 	void SetSpeed(float newSpeed);
 
+	void Bounce();
+
 	void ErasePrevFrame();
 	void UpdatePosition();
 	void Draw();

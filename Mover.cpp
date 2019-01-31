@@ -44,6 +44,13 @@ void Mover::SetSpeed(float newSpeed)
 	}
 }
 
+void Mover::Bounce()
+{
+	speed = -speed;
+}
+
+
+
 void Mover::ErasePrevFrame(){
 
 	leds[(int)prevEnd1] -= CHSV(prevHue, 255, brightness*(1 - (prevEnd1 - (long)prevEnd1)));
