@@ -34,7 +34,7 @@ void Strobe::ErasePrevFrame(){
 }
 
 void Strobe::Draw(){
-	for (int i = 0; i < NUM_LEDS - 1; i++) {
+	for (int i = rangeStart; i < rangeEnd-1; i++) {
 		leds[i] += CHSV(hue, 255, brightness);
 	}
 	//fill_solid(leds, NUM_LEDS, hue); // *** Sometimes was dimming

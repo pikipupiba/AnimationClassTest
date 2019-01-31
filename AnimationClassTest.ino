@@ -57,7 +57,7 @@ void setup(){
 	Serial.println(freeMemory());
 	Serial.println(gCurrentPatternNumber);
 
-	GummyWorm1(10, 2,2);
+	GummyWorm1(10, 5,2);
 }
 
 void loop(){
@@ -65,9 +65,6 @@ void loop(){
 	EVERY_N_SECONDS(10) {
 
 		nextPattern();
-
-		Serial.println(freeMemory());
-		Serial.println(gCurrentPatternNumber);
 
 		for (int i = 0; i < numAnimations; i++) {
 			if (animation[i] == NULL) {
@@ -82,11 +79,15 @@ void loop(){
 
 
 		gPatterns[gCurrentPatternNumber](10, 2, 1);
+
+		Serial.println(freeMemory());
+		Serial.println(gCurrentPatternNumber);
 	}
 
 	if (random8(0, 255) < 6) {
 		animation[0]->Bounce();
 	}
+
 
 	for (int i = 0; i < numAnimations; i++) {
 		if (animation[i] == NULL) {
@@ -119,21 +120,22 @@ void GummyWorm1(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
 	//Serial.println("Gummy Worm 1 Start");
 
-	segments = 1;
+	segments = 5;
 
 	uint16_t border[numAnimations+1];
 
-	for (int i = 0; i < segments; i++) {
-		//animation[i] = new Animation(i*(255/numColors),hueSpeed,128);
-		animation[i] = new Mover(5,1.6,5,true);
-	}
+	animation[0] = new Mover(5,1.6,5,true);
+	animation[1] = new Mover(295, -1.6, 5, true);
+	animation[2] = new Mover(100, 1.6, 5, true);
+	animation[3] = new Mover(200, -1.6, 5, true);
+	animation[4] = new Twinkle(100, 20);
 
 	for (int i = 0; i < segments + 1; i++) {
 		border[i] = i*(((NUM_LEDS) / segments));
 	}
 
 	for (int i = 0; i < segments; i++) {
-		animation[i]->SetRange(border[i] + 1, border[i + 1]);
+		//animation[i]->SetRange(border[i] + 1, border[i + 1]);
 		animation[i]->SetHue(i*(255 / numColors));
 	}
 
@@ -176,22 +178,14 @@ void GummyWorm3(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
 	//Serial.println("Gummy Worm 3 Start");
 
-	segments = numAnimations;
+	segments = 2;
 
 	uint16_t border[numAnimations + 1];
 
-
-	animation[0] = new Mover(150, 1.6, 5, true);
-	animation[1] = new Mover(150, 1.6, 5, true);
-	animation[2] = new Mover(150, 1.6, 5, true);
-	animation[3] = new Mover(150, 1.6, 5, true);
-	animation[4] = new Mover(150, 1.6, 5, true);
-	animation[5] = new Mover(150, -1.6, 5, true);
-	animation[6] = new Mover(150, -1.6, 5, true);
-	animation[7] = new Mover(150, -1.6, 5, true);
-	animation[8] = new Mover(150, -1.6, 5, true);
-	animation[9] = new Mover(150, -1.6, 5, true);
-
+	animation[0] = new Strobe(10,200);
+	animation[1] = new Twinkle (50,20);
+	//animation[2] = new Strobe(10, 200);
+	//animation[3] = new Twinkle(50, 20);
 
 	for (int i = 0; i < segments + 1; i++) {
 		border[i] = i*(((NUM_LEDS) / segments));
@@ -208,7 +202,7 @@ void GummyWorm4(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 
 	//Serial.println("Gummy Worm 4 Start");
 
-	segments = numAnimations;
+	segments = 4;
 
 	uint16_t border[numAnimations + 1];
 
@@ -216,19 +210,10 @@ void GummyWorm4(uint8_t segments, uint8_t numColors, uint8_t hueSpeed) {
 		border[i] = i*(((NUM_LEDS) / segments));
 	}
 
-	animation[0] = new Mover(border[1], -1.6, 5, true);
-	animation[1] = new Mover(border[1], 1.6, 5, true);
-	animation[2] = new Mover(border[3], -1.6, 5, true);
-	animation[3] = new Mover(border[3], 1.6, 5, true);
-	animation[4] = new Mover(border[5],-1.6, 5, true);
-	animation[5] = new Mover(border[5], 1.6, 5, true);
-	animation[6] = new Mover(border[7], -1.6, 5, true);
-	animation[7] = new Mover(border[7], 1.6, 5, true);
-	animation[8] = new Mover(border[9], -1.6, 5, true);
-	animation[9] = new Mover(border[9], 1.6, 5, true);
-
-
-	
+	animation[0] = new Strobe(50,100);
+	animation[1] = new Strobe(25, 150);
+	animation[2] = new Strobe(10, 50);
+	animation[3] = new Strobe(1, 10);
 
 	for (int i = 0; i < segments; i++) {
 		animation[i]->SetRange(border[i] + 1, border[i + 1]);
