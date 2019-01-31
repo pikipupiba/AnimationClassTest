@@ -71,7 +71,7 @@ void loop(){
 	}*/
 
 	
-	if (random8(0, 255) < 5) {
+	if (random8(0, 255) < 6) {
 		animation[0]->Bounce();
 	}
 
