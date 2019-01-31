@@ -75,7 +75,7 @@ void loop(){
 		if (animation[i] == NULL) {
 		}
 		else{
-			animation[i]->SetSpeed(float(beatsin8(11,25,100)+ beatsin8(4, 25, 100))/70);
+			animation[i]->SetSpeed(float(beatsin8(11,15,100)+ beatsin8(4, 15, 100))/70);
 			animation[i]->Update();
 		}
 	}
