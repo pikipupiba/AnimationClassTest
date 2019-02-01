@@ -19,7 +19,7 @@ protected:
 	uint16_t rangeStart;
 	uint16_t rangeEnd;
 
-
+	bool reflect;
 
 	uint8_t prevHue;
 public:

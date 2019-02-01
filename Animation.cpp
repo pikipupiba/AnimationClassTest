@@ -8,6 +8,7 @@ Animation::Animation(){
 	brightness = 128;
 	rangeStart = 0;
 	rangeEnd = NUM_LEDS - 1;
+	reflect = false;
 
 	prevHue = hue;
 }
@@ -18,6 +19,7 @@ Animation::Animation(uint8_t newHue, uint8_t newHueSpeed){
 	brightness = 255;
 	rangeStart = 0;
 	rangeEnd = NUM_LEDS - 1;
+	reflect = false;
 
 	prevHue = hue;
 }
@@ -28,6 +30,7 @@ Animation::Animation(uint8_t newHue, uint8_t newHueSpeed, uint8_t newBrightness)
 	brightness = newBrightness;
 	rangeStart = 0;
 	rangeEnd = NUM_LEDS - 1;
+	reflect = false;
 
 	prevHue = hue;
 }
@@ -38,6 +41,7 @@ Animation::Animation(uint8_t newHue, uint8_t newHueSpeed, uint8_t newBrightness,
 	brightness = newBrightness;
 	rangeStart = newRangeStart;
 	rangeEnd = newRangeEnd;
+	reflect = false;
 
 	prevHue = hue;
 }
