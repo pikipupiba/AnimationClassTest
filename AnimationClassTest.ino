@@ -23,7 +23,7 @@
   ((sizeof(a) / sizeof(*(a))) /                     \
   static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
 
-const uint8_t FRAMES_PER_SECOND = 60;
+const uint8_t FRAMES_PER_SECOND = 100;
 const int NUM_LEDS = 300;
 
 //Initialization Code
@@ -125,7 +125,7 @@ void DancingSisters(uint8_t preset) {
 
 	uint16_t border[numAnimations+1];
 
-	animation[0] = new Mover(292,0.1,3,false);
+	animation[0] = new Mover(240,2.5,20,false);
 	//animation[0]->SetRange(20, 50);
 	//animation[1] = new Mover(0, 1.4, 10, false);
 	//animation[2] = new Mover(120, 0.7, 10, false);

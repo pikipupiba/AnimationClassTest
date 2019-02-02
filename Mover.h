@@ -11,6 +11,8 @@ private:
 	float end1;
 	float end2;
 
+	int tailLength;
+
 	float prevEnd1;
 	float prevEnd2;
 	

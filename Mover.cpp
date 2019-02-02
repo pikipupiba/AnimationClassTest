@@ -10,6 +10,8 @@ Mover::Mover(float newPosition, float newSpeed, float newSize, bool newBounce){
 	end1 = position - size / 2;
 	end2 = position + size / 2;
 
+	tailLength = size * 2 / 5;
+
 	prevEnd1 = end1;
 	prevEnd2 = end2;
 	prevHue = hue;
@@ -122,9 +124,6 @@ void Mover::UpdatePosition() {
 
 	end1 = position - size / 2;
 	end2 = position + size / 2;
-
-	Serial.print("END1: ");
-	Serial.println(end1);
 
 	if (end1 < (int)rangeStart) {
 		end1 = rangeEnd - (rangeStart - end1 - 1);
