@@ -15,7 +15,7 @@ Mover::Mover(float newPosition, float newSpeed, float newSize, bool newBounce){
 	prevHue = hue;
 	
 	hue = 0;
-	hueSpeed = 0;
+	hueSpeed = 1;
 	brightness = 255;
 	rangeStart = 0;
 	rangeEnd = NUM_LEDS-1;
@@ -45,6 +45,20 @@ void Mover::SetSpeed(float newSpeed)
 	}
 }
 
+void Mover::Grow(float amount)
+{
+	if (size + amount < rangeEnd - rangeStart) {
+		size += amount;
+	}
+}
+
+void Mover::Shrink(float amount)
+{
+	if (size - amount > 3) {
+		size -= amount;
+	}
+}
+
 void Mover::Bounce()
 {
 	speed = -speed;
@@ -62,10 +76,10 @@ void Mover::ErasePrevFrame(){
 		}
 	}
 	else {
-		for (int i = prevEnd1 + 1; i <= rangeEnd; i++) {
+		for (int i = prevEnd1 + 1; i < rangeEnd; i++) {
 			if (i <= rangeEnd) { leds[i] -= CHSV(prevHue, 255, brightness); }
 		}
-		for (int i = prevEnd2 - 1; i >= rangeStart; i--) {
+		for (int i = prevEnd2 - 1; i > rangeStart; i--) {
 			if (i >= rangeStart) { leds[i] -= CHSV(prevHue, 255, brightness); }
 		}
 	}
@@ -146,10 +160,10 @@ void Mover::Draw(){
 		}
 	}
 	else {
-		for (int i = end1 + 1; i <= rangeEnd; i++) {
+		for (int i = end1 + 1; i < rangeEnd; i++) {
 			if (i <= rangeEnd) { leds[i] += CHSV(hue, 255, brightness); }
 		}
-		for (int i = end2 - 1; i >= rangeStart; i--) {
+		for (int i = end2 - 1; i > rangeStart; i--) {
 			if (i >= rangeStart) { leds[i] += CHSV(hue, 255, brightness); }
 		}
 	}

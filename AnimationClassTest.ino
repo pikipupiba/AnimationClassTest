@@ -39,8 +39,9 @@ typedef void(*UpdateList[])(uint8_t preset);
 PatternList gPatterns = { DancingSisters,ColorWipe };
 UpdateList gUpdates = { UpdateDancingSisters,UpdateColorWipe };
 
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
+uint8_t gCurrentPatternNumber = 1; // Index number of which pattern is current
 bool autoLoop = false;
+bool trigger = true;
 
 void setup(){
 
@@ -55,7 +56,7 @@ void setup(){
 	Serial.println(freeMemory());
 	Serial.println(gCurrentPatternNumber);
 
-	DancingSisters(0);
+	gPatterns[gCurrentPatternNumber](0);
 }
 
 void loop(){
@@ -85,6 +86,12 @@ void loop(){
 		}
 	}
 	
+	EVERY_N_SECONDS(10) {
+		trigger = !trigger;
+	}
+
+	gUpdates[gCurrentPatternNumber](0);
+
 	//Serial.println("Before Update");
 	for (int i = 0; i < numAnimations; i++) {
 		if (animation[i] == NULL) {
@@ -94,7 +101,6 @@ void loop(){
 		}
 	}
 	//Serial.println("After Update");
-	//animation[0]->Display();
 
 	// send the 'leds' array out to the actual LED strip
 	FastLED.show();
@@ -119,7 +125,7 @@ void DancingSisters(uint8_t preset) {
 
 	uint16_t border[numAnimations+1];
 
-	animation[0] = new Mover(10,1.5,10,false);
+	animation[0] = new Mover(10,0.5,10,false);
 	//animation[0]->SetRange(20, 50);
 	//animation[1] = new Mover(0, 1.4, 10, false);
 	//animation[2] = new Mover(120, 0.7, 10, false);
@@ -145,12 +151,22 @@ void UpdateDancingSisters(uint8_t preset) {
 
 void ColorWipe(uint8_t preset) {
 
-
+	animation[0] = new Mover(0, 0, 3, false);
+	animation[1] = new Mover(NUM_LEDS / 2, 0, NUM_LEDS-3, false);
+	animation[0]->SetHue(0);
+	animation[0]->SetHue(120);
 
 }
 
 void UpdateColorWipe(uint8_t preset) {
 
-
+	if (trigger) {
+		animation[0]->Grow(1);
+		animation[1]->Shrink(1);
+	}
+	else {
+		animation[1]->Grow(1);
+		animation[0]->Shrink(1);
+	}
 
 }

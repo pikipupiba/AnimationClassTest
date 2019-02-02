@@ -123,7 +123,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties arduino.upload.port="COM12" />
+      <UserProperties vm.programmer_name="arduinoisp" arduino.upload.port="COM12" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

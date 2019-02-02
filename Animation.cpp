@@ -101,4 +101,12 @@ void Animation::Bounce()
 {
 }
 
+void Animation::Grow(float amount)
+{
+}
+
+void Animation::Shrink(float amount)
+{
+}
+
 

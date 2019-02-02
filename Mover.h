@@ -22,6 +22,8 @@ public:
 	void Update();
 
 	void SetSpeed(float newSpeed);
+	void Grow(float amount);
+	void Shrink(float amount);
 
 	void Bounce();
 

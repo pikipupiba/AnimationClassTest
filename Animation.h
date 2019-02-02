@@ -43,6 +43,7 @@ public:
 	virtual void SetSpeed(float newSpeed);
 
 	virtual void Bounce();
-
+	virtual void Grow(float amount);
+	virtual void Shrink(float amount);
 };
 
