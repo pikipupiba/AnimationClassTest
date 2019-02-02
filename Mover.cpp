@@ -76,11 +76,11 @@ void Mover::ErasePrevFrame(){
 		}
 	}
 	else {
-		for (int i = prevEnd1 + 1; i < rangeEnd; i++) {
-			if (i <= rangeEnd) { leds[i] -= CHSV(prevHue, 255, brightness); }
+		for (int i = prevEnd1 + 1; i <= rangeEnd; i++) {
+			leds[i] -= CHSV(prevHue, 255, brightness);
 		}
-		for (int i = prevEnd2 - 1; i > rangeStart; i--) {
-			if (i >= rangeStart) { leds[i] -= CHSV(prevHue, 255, brightness); }
+		for (int i = prevEnd2 - 1; i >= (int)rangeStart && prevEnd2 > 1; i--) {
+			leds[i] -= CHSV(prevHue, 255, brightness);
 		}
 	}
 
@@ -113,8 +113,8 @@ void Mover::UpdatePosition() {
 	prevEnd2 = end2;
 	prevHue = hue;
 
-	if (position > rangeEnd) {
-		position = rangeStart;
+	if (position > rangeEnd+1) {
+		position = rangeStart+(position-(rangeEnd+1));
 	}
 	else if (position < rangeStart) {
 		position = rangeEnd;
@@ -123,18 +123,15 @@ void Mover::UpdatePosition() {
 	end1 = position - size / 2;
 	end2 = position + size / 2;
 
-	if (end1 > rangeEnd) {
-		end1 = rangeStart + (end1 - rangeEnd);
-	}
-	else if (end1 < rangeStart) {
-		end1 = rangeEnd - (rangeStart - end1);
+	Serial.print("END1: ");
+	Serial.println(end1);
+
+	if (end1 < (int)rangeStart) {
+		end1 = rangeEnd - (rangeStart - end1 - 1);
 	}
 
-	if (end2 > rangeEnd) {
-		end2 = rangeStart + (end2 - rangeEnd);
-	}
-	else if (end2 < rangeStart) {
-		end2 = rangeEnd - (rangeStart - end2);
+	if (end2 > rangeEnd+1) {
+		end2 = rangeStart + (end2 - rangeEnd - 1);
 	}
 
 	/*
@@ -160,14 +157,14 @@ void Mover::Draw(){
 		}
 	}
 	else {
-		for (int i = end1 + 1; i < rangeEnd; i++) {
-			if (i <= rangeEnd) { leds[i] += CHSV(hue, 255, brightness); }
+		for (int i = end1 + 1; i <= rangeEnd; i++) {
+			leds[i] += CHSV(hue, 255, brightness);
 		}
-		for (int i = end2 - 1; i > rangeStart; i--) {
-			if (i >= rangeStart) { leds[i] += CHSV(hue, 255, brightness); }
+		for (int i = end2 - 1; i >= (int)rangeStart && end2 > 1; i--) {
+			leds[i] += CHSV(hue, 255, brightness);
 		}
 	}
-
+	
 	leds[(int)end2] += CHSV(hue, 255, brightness*(end2 - (long)end2));
 
 	if (reflect) {

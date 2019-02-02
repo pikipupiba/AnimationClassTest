@@ -24,7 +24,7 @@
   static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
 
 const uint8_t FRAMES_PER_SECOND = 60;
-const int NUM_LEDS = 235;
+const int NUM_LEDS = 300;
 
 //Initialization Code
 struct CRGB leds[NUM_LEDS];
@@ -39,7 +39,7 @@ typedef void(*UpdateList[])(uint8_t preset);
 PatternList gPatterns = { DancingSisters,ColorWipe };
 UpdateList gUpdates = { UpdateDancingSisters,UpdateColorWipe };
 
-uint8_t gCurrentPatternNumber = 1; // Index number of which pattern is current
+uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 bool autoLoop = false;
 bool trigger = true;
 
@@ -125,7 +125,7 @@ void DancingSisters(uint8_t preset) {
 
 	uint16_t border[numAnimations+1];
 
-	animation[0] = new Mover(10,0.5,10,false);
+	animation[0] = new Mover(292,0.1,3,false);
 	//animation[0]->SetRange(20, 50);
 	//animation[1] = new Mover(0, 1.4, 10, false);
 	//animation[2] = new Mover(120, 0.7, 10, false);
