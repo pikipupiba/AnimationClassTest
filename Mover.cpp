@@ -10,7 +10,7 @@ Mover::Mover(float newPosition, float newSpeed, float newSize, bool newBounce){
 	end1 = position - size / 2;
 	end2 = position + size / 2;
 
-	tailLength = size * 2 / 5;
+	tailLength = size * 2 / 10;
 
 	prevEnd1 = end1;
 	prevEnd2 = end2;
@@ -70,23 +70,26 @@ void Mover::Bounce()
 
 void Mover::ErasePrevFrame(){
 
-	leds[(int)prevEnd1] -= CHSV(prevHue, 255, brightness*(1 - (prevEnd1 - (long)prevEnd1)));
+	for (int i = 1; i <= tailLength; i++) {
+
+		leds[(int)prevEnd1 + i] -= CHSV(prevHue, 255, brightness*i/tailLength);
+		leds[(int)prevEnd2 - i] -= CHSV(prevHue, 255, brightness*i/tailLength);
+
+	}
 	
 	if (end1 < end2) {
-		for (int i = prevEnd1 + 1; i < prevEnd2 - 1; i++) {
+		for (int i = prevEnd1 + tailLength; i < prevEnd2 - tailLength; i++) {
 			leds[i] -= CHSV(prevHue, 255, brightness);
 		}
 	}
 	else {
-		for (int i = prevEnd1 + 1; i <= rangeEnd; i++) {
+		for (int i = prevEnd1 + tailLength; i <= rangeEnd; i++) {
 			leds[i] -= CHSV(prevHue, 255, brightness);
 		}
-		for (int i = prevEnd2 - 1; i >= (int)rangeStart && prevEnd2 > 1; i--) {
+		for (int i = prevEnd2 - tailLength; i >= (int)rangeStart && prevEnd2 > tailLength; i--) {
 			leds[i] -= CHSV(prevHue, 255, brightness);
 		}
 	}
-
-	leds[(int)prevEnd2] -= CHSV(prevHue, 255, brightness*(prevEnd2 - (long)prevEnd2));
 
 	if (reflect) {
 		leds[NUM_LEDS - (int)prevEnd1 - 1] -= CHSV(prevHue, 255, brightness*(1 - (prevEnd1 - (long)prevEnd1)));
@@ -148,24 +151,9 @@ void Mover::UpdatePosition() {
 
 void Mover::Draw(){
 
-	leds[(int)end1] += CHSV(hue, 255, brightness*(1-(end1 - (long)end1)));
+	DrawTails();
+	DrawMiddle();
 	
-	if (end1 < end2) {
-		for (int i = end1 + 1; i < end2 - 1; i++) {
-			leds[i] += CHSV(hue, 255, brightness);
-		}
-	}
-	else {
-		for (int i = end1 + 1; i <= rangeEnd; i++) {
-			leds[i] += CHSV(hue, 255, brightness);
-		}
-		for (int i = end2 - 1; i >= (int)rangeStart && end2 > 1; i--) {
-			leds[i] += CHSV(hue, 255, brightness);
-		}
-	}
-	
-	leds[(int)end2] += CHSV(hue, 255, brightness*(end2 - (long)end2));
-
 	if (reflect) {
 		leds[NUM_LEDS - (int)end1 - 1] += CHSV(hue, 255, brightness*(1 - (end1 - (long)end1)));
 
@@ -173,6 +161,35 @@ void Mover::Draw(){
 			leds[NUM_LEDS - i - 1] += CHSV(hue, 255, brightness);
 		}
 		leds[NUM_LEDS - (int)end2 - 1] += CHSV(hue, 255, brightness*(end2 - (long)end2));
+	}
+}
+
+void Mover::DrawTails()
+{
+
+	for (int i = 1; i <= tailLength; i++) {
+
+		leds[(int)end1 + i] += CHSV(hue, 255, brightness*i/tailLength);
+		leds[(int)end2 - i] += CHSV(hue, 255, brightness*i / tailLength);
+
+	}
+
+}
+
+void Mover::DrawMiddle()
+{
+	if (end1 < end2) {
+		for (int i = end1 + tailLength; i < end2 - tailLength; i++) {
+			leds[i] += CHSV(hue, 255, brightness);
+		}
+	}
+	else {
+		for (int i = end1 + tailLength; i <= rangeEnd; i++) {
+			leds[i] += CHSV(hue, 255, brightness);
+		}
+		for (int i = end2 - tailLength; i >= (int)rangeStart && end2 > tailLength; i--) {
+			leds[i] += CHSV(hue, 255, brightness);
+		}
 	}
 }
 

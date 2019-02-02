@@ -32,5 +32,7 @@ public:
 	void ErasePrevFrame();
 	void UpdatePosition();
 	void Draw();
+	void DrawTails();
+	void DrawMiddle();
 };
 
