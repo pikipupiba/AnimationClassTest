@@ -45,5 +45,8 @@ public:
 	virtual void Bounce();
 	virtual void Grow(float amount);
 	virtual void Shrink(float amount);
+	virtual void WobbleSize(int min1, int max1, int frequency1, int min2=0, int max2=0, int frequency2=0, int min3=0, int max3=0, int frequency3=0, int min4=0, int max4=0, int frequency4=0);
+	virtual void WobbleSpeed(int min1, int max1, int frequency1, int min2 = 0, int max2 = 0, int frequency2 = 0, int min3 = 0, int max3 = 0, int frequency3 = 0, int min4 = 0, int max4 = 0, int frequency4 = 0);
+
 };
 

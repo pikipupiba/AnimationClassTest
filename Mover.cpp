@@ -64,6 +64,16 @@ void Mover::Bounce()
 	speed = -speed;
 }
 
+void Mover::WobbleSize(int min1, int max1, int frequency1, int min2=0, int max2=0, int frequency2=0, int min3=0, int max3=0, int frequency3=0, int min4=0, int max4=0, int frequency4=0)
+{
+	size = (float)(beatsin16(frequency1, min1*100, max1*100) + beatsin16(frequency2, min2 * 100, max2 * 100) + beatsin16(frequency3, min3 * 100, max3 * 100) + beatsin16(frequency4, min4 * 100, max4 * 100))/100;
+}
+
+void Mover::WobbleSpeed(int min1, int max1, int frequency1, int min2 = 0, int max2 = 0, int frequency2 = 0, int min3 = 0, int max3 = 0, int frequency3 = 0, int min4 = 0, int max4 = 0, int frequency4 = 0)
+{
+	SetSpeed( (float)(beatsin16(frequency1, min1, max1) + beatsin16(frequency2, min2, max2) + beatsin16(frequency3, min3, max3) + beatsin16(frequency4, min4, max4)) / 100);
+}
+
 
 
 void Mover::ErasePrevFrame(){
@@ -122,9 +132,6 @@ void Mover::UpdatePosition() {
 
 	end1 = position - size / 2;
 	end2 = position + size / 2;
-
-	Serial.print("END1: ");
-	Serial.println(end1);
 
 	if (end1 < (int)rangeStart) {
 		end1 = rangeEnd - (rangeStart - end1 - 1);

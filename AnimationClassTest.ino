@@ -19,11 +19,11 @@
 #define COLOR_ORDER   GRB
 #define LED_TYPE      WS2812B
 
-#define ARRAY_SIZE(a)                               \
-  ((sizeof(a) / sizeof(*(a))) /                     \
-  static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
+//#define ARRAY_SIZE(a)                               \
+//  ((sizeof(a) / sizeof(*(a))) /                     \
+//  static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
 
-const uint8_t FRAMES_PER_SECOND = 60;
+const uint8_t FRAMES_PER_SECOND = 120;
 const int NUM_LEDS = 300;
 
 //Initialization Code
@@ -114,23 +114,23 @@ void loop(){
 void nextPattern()
 {
 	// add one to the current pattern number, and wrap around at the end
-	gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+	gCurrentPatternNumber = (gCurrentPatternNumber + 1) % 2; // ARRAY_SIZE(gPatterns);
 
 }
 
 void DancingSisters(uint8_t preset) {
 
-	uint8_t numMovers = 1;
+	uint8_t numMovers = 5;
 	uint8_t numColors = 5;
 
 	uint16_t border[numAnimations+1];
 
-	animation[0] = new Mover(292,0.1,3,false);
+	animation[0] = new Mover(240,0.2,10,true);
 	//animation[0]->SetRange(20, 50);
-	//animation[1] = new Mover(0, 1.4, 10, false);
-	//animation[2] = new Mover(120, 0.7, 10, false);
-	//animation[3] = new Mover(120, 1.4, 10, false);
-	//animation[4] = new Twinkle(5, 10);
+	animation[1] = new Mover(40, 1.4, 10, true);
+	animation[2] = new Mover(160, 0.7, 10, true);
+	animation[3] = new Mover(120, 1.4, 10, true);
+	animation[4] = new Twinkle(10, 30);
 
 	for (int i = 0; i < numMovers + 1; i++) {
 		border[i] = i*(((NUM_LEDS) / numMovers));
@@ -145,8 +145,21 @@ void DancingSisters(uint8_t preset) {
 
 void UpdateDancingSisters(uint8_t preset) {
 
+	 animation[0]->WobbleSize(1,  10, 11,  2, 10, 9,  1, 5,  17, 1, 8, 20);
+	 animation[1]->WobbleSize(1,  5,  10,  2, 20, 13, 1, 15, 13, 1, 7, 21);
+	 animation[2]->WobbleSize(1,  5,   7,  2, 5 , 3 , 1, 10, 11, 1, 6, 18);
+	 animation[3]->WobbleSize(1,  10,  9,  2, 10, 13, 1, 12, 12, 1, 5, 15);
 
+	animation[0]->WobbleSpeed(20, 50,   8, 5, 50, 10, 5, 50, 17, 5, 50, 20);
+	animation[1]->WobbleSpeed(10, 60,  10, 5, 50, 13, 5, 50, 17, 5, 50, 17);
+	animation[2]->WobbleSpeed(10, 30,   7, 5, 50, 13, 5, 50, 17, 5, 50, 19);
+	animation[3]->WobbleSpeed(10, 100, 11, 5, 50, 13, 5, 50, 17, 5, 50, 18);
 
+	for (int i = 0; i < 4; i++) {
+		if (random8() < 4) {
+			animation[i]->Bounce();
+		}
+	}
 }
 
 void ColorWipe(uint8_t preset) {

@@ -109,4 +109,12 @@ void Animation::Shrink(float amount)
 {
 }
 
+void Animation::WobbleSize(int min1, int max1, int frequency1, int min2=0, int max2=0, int frequency2=0, int min3=0, int max3=0, int frequency3=0, int min4=0, int max4=0, int frequency4=0)
+{
+}
+
+void Animation::WobbleSpeed(int min1, int max1, int frequency1, int min2 = 0, int max2 = 0, int frequency2 = 0, int min3 = 0, int max3 = 0, int frequency3 = 0, int min4 = 0, int max4 = 0, int frequency4 = 0)
+{
+}
+
 
