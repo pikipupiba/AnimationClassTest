@@ -13,15 +13,17 @@ private:
 
 protected:
 	uint8_t hue;
+	uint8_t prevHue;
 	uint8_t hueSpeed;
 	uint8_t brightness;
 
 	uint16_t rangeStart;
 	uint16_t rangeEnd;
 
+	uint8_t state;
+
 	bool reflect;
 
-	uint8_t prevHue;
 public:
 
 	Animation();

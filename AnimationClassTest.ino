@@ -3,6 +3,7 @@
     Created:	8/5/2018 11:12:26 PM
     Author:     DESKTOP-EE50DD5\pikip
 */
+#include "Shutters.h"
 #include <FastLED.h>
 #include "Animation.h"
 #include "Mover.h"
@@ -36,10 +37,10 @@ Animation* animation[numAnimations];
 typedef void(*PatternList[])(uint8_t preset);
 typedef void(*UpdateList[])(uint8_t preset);
 
-PatternList gPatterns = { DancingSisters,ColorWipe };
-UpdateList gUpdates = { UpdateDancingSisters,UpdateColorWipe };
+PatternList gPatterns = { DancingSisters, ColorWipe, ShutterWipe };
+UpdateList gUpdates = { UpdateDancingSisters, UpdateColorWipe, UpdateShutterWipe };
 
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
+uint8_t gCurrentPatternNumber = 2; // Index number of which pattern is current
 bool autoLoop = false;
 bool trigger = true;
 
@@ -54,6 +55,7 @@ void setup(){
 
 	Serial.println("Starting...");
 	Serial.println(freeMemory());
+	Serial.print("Current Pattern: ");
 	Serial.println(gCurrentPatternNumber);
 
 	gPatterns[gCurrentPatternNumber](0);
@@ -86,9 +88,9 @@ void loop(){
 		}
 	}
 	
-	EVERY_N_SECONDS(10) {
+	/*EVERY_N_SECONDS(10) {
 		trigger = !trigger;
-	}
+	}*/
 
 	gUpdates[gCurrentPatternNumber](0);
 
@@ -120,7 +122,7 @@ void nextPattern()
 
 void DancingSisters(uint8_t preset) {
 
-	uint8_t numMovers = 5;
+	uint8_t numMovers = 2;
 	uint8_t numColors = 5;
 
 	uint16_t border[numAnimations+1];
@@ -128,9 +130,11 @@ void DancingSisters(uint8_t preset) {
 	animation[0] = new Mover(240,0.2,10,true);
 	//animation[0]->SetRange(20, 50);
 	animation[1] = new Mover(40, 1.4, 10, true);
-	animation[2] = new Mover(160, 0.7, 10, true);
-	animation[3] = new Mover(120, 1.4, 10, true);
+	//animation[2] = new Mover(160, 0.7, 10, true);
+	//animation[3] = new Mover(120, 1.4, 10, true);
 	animation[4] = new Twinkle(10, 30);
+	//animation[5] = new Shutters(20, 1);
+	Serial.println(freeMemory());
 
 	for (int i = 0; i < numMovers + 1; i++) {
 		border[i] = i*(((NUM_LEDS) / numMovers));
@@ -147,15 +151,15 @@ void UpdateDancingSisters(uint8_t preset) {
 
 	 animation[0]->WobbleSize(1,  10, 11,  2, 10, 9,  1, 5,  17, 1, 8, 20);
 	 animation[1]->WobbleSize(1,  5,  10,  2, 20, 13, 1, 15, 13, 1, 7, 21);
-	 animation[2]->WobbleSize(1,  5,   7,  2, 5 , 3 , 1, 10, 11, 1, 6, 18);
-	 animation[3]->WobbleSize(1,  10,  9,  2, 10, 13, 1, 12, 12, 1, 5, 15);
+	 //animation[2]->WobbleSize(1,  5,   7,  2, 5 , 3 , 1, 10, 11, 1, 6, 18);
+	 //animation[3]->WobbleSize(1,  10,  9,  2, 10, 13, 1, 12, 12, 1, 5, 15);
 
 	animation[0]->WobbleSpeed(20, 50,   8, 5, 50, 10, 5, 50, 17, 5, 50, 20);
 	animation[1]->WobbleSpeed(10, 60,  10, 5, 50, 13, 5, 50, 17, 5, 50, 17);
-	animation[2]->WobbleSpeed(10, 30,   7, 5, 50, 13, 5, 50, 17, 5, 50, 19);
-	animation[3]->WobbleSpeed(10, 100, 11, 5, 50, 13, 5, 50, 17, 5, 50, 18);
+	//animation[2]->WobbleSpeed(10, 30,   7, 5, 50, 13, 5, 50, 17, 5, 50, 19);
+	//animation[3]->WobbleSpeed(10, 100, 11, 5, 50, 13, 5, 50, 17, 5, 50, 18);
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		if (random8() < 4) {
 			animation[i]->Bounce();
 		}
@@ -182,4 +186,22 @@ void UpdateColorWipe(uint8_t preset) {
 		animation[0]->Shrink(1);
 	}
 
+}
+
+void ShutterWipe(uint8_t preset) {
+
+	//animation[0] = new Shutters(30,0.5,0,0);
+	//animation[1] = new Shutters(20, 1, 0,1);
+	//animation[1]->SetHue(100);
+	animation[2] = new Shutters(16, 1.5, 0, 1);
+	animation[2]->SetHue(200);
+
+	//animation[1] = new Twinkle(10, 30);
+
+}
+
+void UpdateShutterWipe(uint8_t preset) {
+	//float newSpeed = (float)(beatsin8(10, 2, 30) + beatsin8(4, 2, 70) + beatsin8(13, 2, 20) + beatsin8(19, 2, 20)) / 120;
+	//animation[0]->SetSpeed(newSpeed);
+	//animation[1]->SetSpeed(newSpeed);
 }

@@ -12,9 +12,9 @@ Mover::Mover(float newPosition, float newSpeed, float newSize, bool newBounce){
 
 	prevEnd1 = end1;
 	prevEnd2 = end2;
-	prevHue = hue;
 	
 	hue = 0;
+	prevHue = hue;
 	hueSpeed = 1;
 	brightness = 255;
 	rangeStart = 0;

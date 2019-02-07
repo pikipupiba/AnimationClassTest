@@ -105,6 +105,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Mover.h" />
+    <ClInclude Include="Shutters.h" />
     <ClInclude Include="Strobe.h" />
     <ClInclude Include="Twinkle.h" />
     <ClInclude Include="__vm\.AnimationClassTest.vsarduino.h" />
@@ -112,6 +113,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Mover.cpp" />
+    <ClCompile Include="Shutters.cpp" />
     <ClCompile Include="Strobe.cpp" />
     <ClCompile Include="Twinkle.cpp" />
   </ItemGroup>
