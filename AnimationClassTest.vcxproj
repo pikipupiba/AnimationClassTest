@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="ColorWar.h" />
     <ClInclude Include="Mover.h" />
     <ClInclude Include="Shutters.h" />
     <ClInclude Include="Strobe.h" />
@@ -112,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ColorWar.cpp" />
     <ClCompile Include="Mover.cpp" />
     <ClCompile Include="Shutters.cpp" />
     <ClCompile Include="Strobe.cpp" />

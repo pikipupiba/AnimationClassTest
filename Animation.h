@@ -5,7 +5,7 @@
 
 extern const int NUM_LEDS;
 extern const uint8_t FRAMES_PER_SECOND;
-extern struct CRGB leds[];
+extern CRGBArray<300> leds;
 
 class Animation
 {

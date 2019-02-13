@@ -13,9 +13,9 @@ Mover::Mover(float newPosition, float newSpeed, float newSize, bool newBounce){
 	prevEnd1 = end1;
 	prevEnd2 = end2;
 	
-	hue = 0;
+	hue = 160;
 	prevHue = hue;
-	hueSpeed = 1;
+	hueSpeed = 0;
 	brightness = 255;
 	rangeStart = 0;
 	rangeEnd = NUM_LEDS-1;

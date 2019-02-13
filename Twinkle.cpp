@@ -32,7 +32,7 @@ void Twinkle::DimPrevFrame(){
 				twinkles[i][1] = 0;
 			}
 
-			leds[twinkles[i][0]] = CHSV(hue, 255, twinkles[i][1]);
+			leds[twinkles[i][0]] = CHSV(hue, 255*0, twinkles[i][1]);
 		}
 	}
 
@@ -41,7 +41,7 @@ void Twinkle::DimPrevFrame(){
 void Twinkle::Draw(){
 
 	for (int i = 0; i < 21; i++) {
-		leds[twinkles[i][0]] = CHSV(hue, 255, twinkles[i][1]);
+		leds[twinkles[i][0]] = CHSV(hue, 255*0, twinkles[i][1]);
 	}
 
 }

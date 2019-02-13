@@ -3,6 +3,7 @@
     Created:	8/5/2018 11:12:26 PM
     Author:     DESKTOP-EE50DD5\pikip
 */
+#include "ColorWar.h"
 #include "Shutters.h"
 #include <FastLED.h>
 #include "Animation.h"
@@ -28,7 +29,7 @@ const uint8_t FRAMES_PER_SECOND = 120;
 const int NUM_LEDS = 300;
 
 //Initialization Code
-struct CRGB leds[NUM_LEDS];
+CRGBArray<NUM_LEDS> leds;
 const uint8_t numAnimations = 10;
 uint8_t curNumAnimations;
 Animation* animation[numAnimations];
@@ -37,10 +38,10 @@ Animation* animation[numAnimations];
 typedef void(*PatternList[])(uint8_t preset);
 typedef void(*UpdateList[])(uint8_t preset);
 
-PatternList gPatterns = { DancingSisters, ColorWipe, ShutterWipe };
-UpdateList gUpdates = { UpdateDancingSisters, UpdateColorWipe, UpdateShutterWipe };
+PatternList gPatterns = { BasicMover, DancingSisters, ColorWipe, ShutterWipe, Battle };
+UpdateList gUpdates = { UpdateBasicMover, UpdateDancingSisters, UpdateColorWipe, UpdateShutterWipe, UpdateBattle };
 
-uint8_t gCurrentPatternNumber = 2; // Index number of which pattern is current
+uint8_t gCurrentPatternNumber = 3; // Index number of which pattern is current
 bool autoLoop = false;
 bool trigger = true;
 
@@ -50,7 +51,7 @@ void setup(){
 	delay(1000);
 	pinMode(DATA_PIN, OUTPUT);
 	// LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER
-	LEDS.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+	FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 	FastLED.setBrightness(255);
 
 	Serial.println("Starting...");
@@ -59,17 +60,16 @@ void setup(){
 	Serial.println(gCurrentPatternNumber);
 
 	gPatterns[gCurrentPatternNumber](0);
+
 }
 
 void loop(){
 
 	if (autoLoop) {
 		EVERY_N_SECONDS(10) {
-		Serial.println(freeMemory());
-		
-			Serial.println(freeMemory());
+
 			nextPattern();
-			Serial.println(freeMemory());
+
 			for (int i = 0; i < numAnimations; i++) {
 				if (animation[i] == NULL) {
 				}
@@ -78,13 +78,10 @@ void loop(){
 					animation[i] = NULL;
 				}
 			}
-			Serial.println(freeMemory());
-			fadeToBlackBy(leds, NUM_LEDS, 255);
-			Serial.println(freeMemory());
-			gPatterns[gCurrentPatternNumber](0);
 
-			Serial.println(freeMemory());
-			Serial.println(gCurrentPatternNumber);
+			fadeToBlackBy(leds, NUM_LEDS, 255);
+
+			gPatterns[gCurrentPatternNumber](0);
 		}
 	}
 	
@@ -118,6 +115,23 @@ void nextPattern()
 	// add one to the current pattern number, and wrap around at the end
 	gCurrentPatternNumber = (gCurrentPatternNumber + 1) % 2; // ARRAY_SIZE(gPatterns);
 
+}
+
+void BasicMover(uint8_t preset){
+
+	for (int i = 0; i < 10; i++) {
+		animation[i] = new Mover(30*i, 1, 10, false);
+		animation[i]->SetHue((int)(i*255/10),2);
+	}
+}
+
+void UpdateBasicMover(uint8_t preset) {
+	
+	float newSpeed = (float)(beatsin8(10, 20, 255)+ beatsin8(7, 20, 255)) / 255;
+	
+	for (int i = 0; i < 10; i++) {
+		animation[i]->SetSpeed(newSpeed);
+	}
 }
 
 void DancingSisters(uint8_t preset) {
@@ -190,18 +204,28 @@ void UpdateColorWipe(uint8_t preset) {
 
 void ShutterWipe(uint8_t preset) {
 
-	//animation[0] = new Shutters(30,0.5,0,0);
-	//animation[1] = new Shutters(20, 1, 0,1);
-	//animation[1]->SetHue(100);
-	animation[2] = new Shutters(16, 1.5, 0, 1);
-	animation[2]->SetHue(200);
+	animation[0] = new Shutters(20,1,4,0);
+	animation[1] = new Shutters(20, 2, 2,1);
+	animation[1]->SetHue(100);
+	//animation[2] = new Shutters(40, 1, 0, 0);
+	//animation[2]->SetHue(200);
 
-	//animation[1] = new Twinkle(10, 30);
-
+	animation[3] = new Twinkle(50, 30);
+	//animation[4] = new Twinkle(50, 30);
+	//animation[4]->SetHue(100);
 }
 
 void UpdateShutterWipe(uint8_t preset) {
-	//float newSpeed = (float)(beatsin8(10, 2, 30) + beatsin8(4, 2, 70) + beatsin8(13, 2, 20) + beatsin8(19, 2, 20)) / 120;
-	//animation[0]->SetSpeed(newSpeed);
-	//animation[1]->SetSpeed(newSpeed);
+	float newSpeed = (float)(beatsin8(10, 2, 30) + beatsin8(4, 2, 70) + beatsin8(5, 2, 20) + beatsin8(7, 2, 40)) / 200;
+	animation[0]->SetSpeed(newSpeed);
+	animation[1]->SetSpeed(newSpeed*2);
+	//animation[2]->SetSpeed(newSpeed / 2);
+}
+
+void Battle(uint8_t preset) {
+	animation[0] = new ColorWar(6);
+}
+
+void UpdateBattle(uint8_t preset) {
+
 }
